@@ -1,0 +1,9 @@
+{
+  "dims": ["order", "entropy", "life", "knowledge", "resources", "stability"],
+  "relax": 0.02,
+  "soft_lo": -0.3,
+  "soft_hi": 1.3,
+  "hard_lo": -0.1,
+  "hard_hi": 1.1,
+  "default_state": 0.5
+}

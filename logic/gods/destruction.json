@@ -1,0 +1,41 @@
+{
+  "name": "毁灭",
+  "power": 1.0,
+  "temper": 1.3,
+  "goal": {"entropy": 1.0, "order": 0.0, "life": 0.0},
+  "affinity": {"entropy": 1.0, "order": 0.8, "life": 0.5},
+  "state_init": {"rage": 0.0, "ema_align": 0.5, "progress": 0.0},
+  "ema": {"alpha": 0.1},
+  "perceive": {
+    "rage": "rage * 0.9 + abs(entropy - 0.5) * 0.1",
+    "ema_align": "ema_align * (1 - alpha) + align * alpha",
+    "progress": "clamp(progress + 0.02 * temper * (align - 0.4), 0, 1)"
+  },
+  "modes": {
+    "push": {
+      "score": "ema_align * 1.0 + 0.1",
+      "deltas": {
+        "entropy": "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.2",
+        "order":   "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.2",
+        "life":    "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.2"
+      }
+    },
+    "strike": {
+      "score": "rage * 2.0 + temper * 0.1",
+      "deltas": {
+        "entropy": "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.3",
+        "order":   "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.3",
+        "life":    "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.3"
+      }
+    },
+    "adapt": {
+      "score": "temper * 0.15",
+      "deltas": {
+        "entropy": "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.1",
+        "order":   "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.1",
+        "life":    "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.1"
+      }
+    },
+    "wait": {"score": "0.05", "deltas": {}}
+  }
+}

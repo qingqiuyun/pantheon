@@ -1,0 +1,50 @@
+{
+  "name": "虚无",
+  "power": 1.0,
+  "temper": 1.2,
+  "goal": {"order": 0.0, "entropy": 0.0, "life": 0.0, "knowledge": 0.0, "resources": 0.0, "stability": 0.0},
+  "affinity": {"order": 0.6, "entropy": 0.6, "life": 0.6, "knowledge": 0.6, "resources": 0.6, "stability": 0.6},
+  "state_init": {"rage": 0.0, "ema_align": 0.5, "progress": 0.0},
+  "ema": {"alpha": 0.1},
+  "perceive": {
+    "rage": "rage * 0.9 + abs(entropy - 0.5) * 0.1",
+    "ema_align": "ema_align * (1 - alpha) + align * alpha",
+    "progress": "clamp(progress + 0.02 * temper * (align - 0.4), 0, 1)"
+  },
+  "modes": {
+    "push": {
+      "score": "ema_align * 1.0 + 0.1",
+      "deltas": {
+        "order":     "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.2",
+        "entropy":   "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.2",
+        "life":      "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.2",
+        "knowledge": "power * (1 + 2 * progress) * (goal_knowledge - knowledge) * aff_knowledge * 0.2",
+        "resources": "power * (1 + 2 * progress) * (goal_resources - resources) * aff_resources * 0.2",
+        "stability": "power * (1 + 2 * progress) * (goal_stability - stability) * aff_stability * 0.2"
+      }
+    },
+    "strike": {
+      "score": "rage * 2.0 + temper * 0.1",
+      "deltas": {
+        "order":     "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.3",
+        "entropy":   "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.3",
+        "life":      "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.3",
+        "knowledge": "power * (1 + 2 * progress) * (goal_knowledge - knowledge) * aff_knowledge * 0.3",
+        "resources": "power * (1 + 2 * progress) * (goal_resources - resources) * aff_resources * 0.3",
+        "stability": "power * (1 + 2 * progress) * (goal_stability - stability) * aff_stability * 0.3"
+      }
+    },
+    "adapt": {
+      "score": "temper * 0.15",
+      "deltas": {
+        "order":     "power * (1 + 2 * progress) * (goal_order - order) * aff_order * 0.1",
+        "entropy":   "power * (1 + 2 * progress) * (goal_entropy - entropy) * aff_entropy * 0.1",
+        "life":      "power * (1 + 2 * progress) * (goal_life - life) * aff_life * 0.1",
+        "knowledge": "power * (1 + 2 * progress) * (goal_knowledge - knowledge) * aff_knowledge * 0.1",
+        "resources": "power * (1 + 2 * progress) * (goal_resources - resources) * aff_resources * 0.1",
+        "stability": "power * (1 + 2 * progress) * (goal_stability - stability) * aff_stability * 0.1"
+      }
+    },
+    "wait": {"score": "0.05", "deltas": {}}
+  }
+}
